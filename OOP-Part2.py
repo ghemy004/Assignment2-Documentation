@@ -33,15 +33,12 @@ class Workshop: # The main class
     def removeEchantment(self, enchantment):
         self.enchantment.remove(enchantment)
     
-    def displayWeapons(self):
-
-
-
-
+    def displayWeapons(self): 
+        value = " "
+        for weapon in self.weapons:
+            if weapon.enchantment:
+                value += "The {} is imbued with a {}. {}\n".format(weapon.name, weapon.echantment.useEffect(), weapon.attack())
+            else:
+                value += "The {} is not enchanted. {}\n".format(weapon.name, weapon.attack()) 
+        return value
     
-    
-
-
-
-
-  
