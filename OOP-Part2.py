@@ -41,5 +41,3 @@ class Workshop: # The main class
             else:
                 value += "The {} is not enchanted. {}\n".format(weapon.name, weapon.attack()) 
         return value
-    
-angeloooo
