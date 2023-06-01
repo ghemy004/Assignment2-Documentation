@@ -42,4 +42,3 @@ class Workshop: # The main class
                 value += "The {} is not enchanted. {}\n".format(weapon.name, weapon.attack()) 
         return value
     
-    #hello git
