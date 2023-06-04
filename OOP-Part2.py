@@ -15,24 +15,27 @@ class Workshop: # The main class
         self.weapons = []
         self.enchantment = [] 
     
+    # this method takes material as a parameter and adds it to the material 
     def addMaterial(self, material):
         self.materials.append(material)
     
-    def removeMaterial(Self, material):
+    def removeMaterial(self, material):
         self.materials.remove(material)
     
+    # this method takes weapon as a parameter and adds it to the weapons list
     def addWeapon(self, weapon):
         self.weapons.append(weapon)
-    
-    def removeWeapon(Self, weapon):
+        
+    def removeWeapon(self, weapon):
         self.weapons.remove(weapon)
     
+    # this method takes echantment as a parameter and adds it to the echantment list
     def addEchantment(self,echantment):
         self.enchantment.append(echantment)
 
     def removeEchantment(self, enchantment):
         self.enchantment.remove(enchantment)
-    
+  
     def displayWeapons(self): 
         value = " "
         for weapon in self.weapons:
@@ -41,4 +44,4 @@ class Workshop: # The main class
             else:
                 value += "The {} is not enchanted. {}\n".format(weapon.name, weapon.attack()) 
         return value
-    
+
