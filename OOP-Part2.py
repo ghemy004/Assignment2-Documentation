@@ -54,7 +54,6 @@ class Workshop: # The main class
 
         return result
     
-# Display enchantments
     def displayEnchantments(self):
         enchantmentNames = []
         
@@ -138,8 +137,14 @@ class Forge(Crafter):
 
         return weapon
     
-    def disassemble(self):
-        return super().disassemble()
+    def disassemble(self, weapon, materials):
+        primaryMaterial = weapon.getPrimaryMaterial()
+        catalystMaterial = weapon.getCatalystMaterial()
+
+        materials[primaryMaterial.__class__.__name__] += 1
+        materials[catalystMaterial.__class__.__name__] += 1 
+
+        
         
 
         
