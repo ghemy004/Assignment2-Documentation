@@ -96,3 +96,31 @@ class Weapon:
     
     def getEnchantment(self):
         return self.__enchantment
+    
+    def setName(self, name):
+        self.__name = name
+    
+    def setDamage(self, damage):
+        self.__damage = damage
+    
+    def setEnchanted(self, enchanted):
+        self.__enchanted = enchanted
+    
+    def setEnchantment(self, enchantment):
+        self.__enchantment = enchantment
+    
+    def calculateDamage(self, primaryMaterial, cataystMaterial):
+
+        if isinstance(primaryMaterial, Wood) and isinstance(cataystMaterial, Wood):
+            damage = primaryMaterial.strength * cataystMaterial.strength
+
+        elif isinstance (primaryMaterial, Metal) and isinstance(cataystMaterial, Metal):
+            damage = (primaryMaterial.strength * primaryMaterial.purity) + (cataystMaterial.strength * cataystMaterial.purity)
+        
+        elif isinstance (primaryMaterial, Wood) and isinstance(cataystMaterial, Metal):
+            damage = primaryMaterial.strength * (cataystMaterial.strength * cataystMaterial.purity)
+        else:
+            damage = cataystMaterial * (primaryMaterial.strength * primaryMaterial.purity)
+        
+        return damage
+        
