@@ -123,4 +123,13 @@ class Weapon:
             damage = cataystMaterial * (primaryMaterial.strength * primaryMaterial.purity)
         
         return damage
+
+class Forge(Crafter):
+    def __init__(self):
+        pass
+    
+    def craft(self, name, primaryMaterial, catalystMaterial, materials):
+        weapon = Weapon(primaryMaterial, catalystMaterial)
+        
+
         
