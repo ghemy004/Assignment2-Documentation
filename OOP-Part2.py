@@ -109,18 +109,18 @@ class Weapon:
     def setEnchantment(self, enchantment):
         self.__enchantment = enchantment
     
-    def calculateDamage(self, primaryMaterial, cataystMaterial):
+    def calculateDamage(self, primaryMaterial, catalystMaterial):
 
-        if isinstance(primaryMaterial, Wood) and isinstance(cataystMaterial, Wood):
-            damage = primaryMaterial.strength * cataystMaterial.strength
+        if isinstance(primaryMaterial, Wood) and isinstance(catalystMaterial, Wood):
+            damage = primaryMaterial.strength * catalystMaterial.strength
 
-        elif isinstance (primaryMaterial, Metal) and isinstance(cataystMaterial, Metal):
-            damage = (primaryMaterial.strength * primaryMaterial.purity) + (cataystMaterial.strength * cataystMaterial.purity)
+        elif isinstance (primaryMaterial, Metal) and isinstance(catalystMaterial, Metal):
+            damage = (primaryMaterial.strength * primaryMaterial.purity) + (catalystMaterial.strength * catalystMaterial.purity)
         
-        elif isinstance (primaryMaterial, Wood) and isinstance(cataystMaterial, Metal):
-            damage = primaryMaterial.strength * (cataystMaterial.strength * cataystMaterial.purity)
+        elif isinstance (primaryMaterial, Wood) and isinstance(catalystMaterial, Metal):
+            damage = primaryMaterial.strength * (catalystMaterial.strength * catalystMaterial.purity)
         else:
-            damage = cataystMaterial * (primaryMaterial.strength * primaryMaterial.purity)
+            damage = catalystMaterial * (primaryMaterial.strength * primaryMaterial.purity)
         
         return damage
 
@@ -137,6 +137,9 @@ class Forge(Crafter):
         materials[catalystMaterial.__class__.__name__] -= 1
 
         return weapon
+    
+    def disassemble(self):
+        return super().disassemble()
         
 
         
