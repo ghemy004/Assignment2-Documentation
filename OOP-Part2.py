@@ -130,6 +130,13 @@ class Forge(Crafter):
     
     def craft(self, name, primaryMaterial, catalystMaterial, materials):
         weapon = Weapon(primaryMaterial, catalystMaterial)
+        weapon.setDamage(weapon.calculateDamage(primaryMaterial, catalystMaterial))
+        weapon.setName(name)
+
+        materials[primaryMaterial.__class__.__name__] -= 1
+        materials[catalystMaterial.__class__.__name__] -= 1
+
+        return weapon
         
 
         
