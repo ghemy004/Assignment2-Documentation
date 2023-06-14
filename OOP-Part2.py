@@ -79,3 +79,20 @@ class Weapon:
         self.__enchanted = False
         self.__name = ''
     
+    def getName(self):
+        return self.__name
+    
+    def getDamage(self):
+        return self.__damage
+    
+    def getEnchanted(self):
+        return self.__enchanted
+    
+    def getPrimaryMaterial(self):
+        return self.__primaryMaterial
+    
+    def getCatalystMaterial(self):
+        return self.__catalystMaterial
+    
+    def getEnchantment(self):
+        return self.__enchantment
