@@ -145,6 +145,49 @@ class Forge(Crafter):
         materials[catalystMaterial.__class__.__name__] += 1 
 
         
+class Enchanter(Crafter):
+    def __init__(self,):
+        self.recipes = {
+            "Holy": "pulses a blinding beam of light",
+            "Lava": "melts the armour off an enemy",
+            "Pyro": "applies a devastating burning effect",
+            "Darkness": "binds the enemy in dark vines",
+            "Cursed": "causes the enemy to become crazed",
+            "Hydro": "envelops the enemy in a suffocating bubble",
+            "Venomous": "afflicts a deadly, fast-acting toxin",
+            "Earthly":"Down to earth"}
         
 
-        
+    #def craft(self, enchantment):
+
+class Enchantment:
+    def __init__(self, name, magicDamage, effect, primaryMaterial, catalystMaterial):
+        self.__name = name
+        self.__magicDamage = 0
+        self.__effect = ''
+        self.__primaryMaterial = primaryMaterial
+        self.__catalystMaterial = catalystMaterial
+    
+    def getName(self):
+        return self.__name
+    
+    def getMagicDamage(self):
+        return self.__magicDamage
+    
+    def getEffect(self):
+        return self.__effect
+
+    def getPrimaryMaterial(self):
+        return self.__primaryMaterial
+    
+    def getCatalystMaterial(self):
+        return self.__catalystMaterial
+    
+    def setEffect(self, value):
+        self.__effect = value
+    
+    def setMagicDamage(self, damage):
+        self.__magicDamage = damage
+    
+    
+    
