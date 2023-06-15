@@ -12,61 +12,66 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 '''
 
 class Workshop: # The main class
-    def __init__(self, enchanter, forge): # 
-        self.__forge = forge
-        self.__enchanter = enchanter
-        self.__materials = []
-        self.__weapons = []
-        self.__enchantment = [] 
+    def __init__(self, forge, enchanter): # 
+        self.forge = forge
+        self.enchanter = enchanter
+        self.materials = {}
+        self.weapons = []
+        self.enchantments = [] 
     
     # this method takes material as a parameter and adds it to the material 
-    def addMaterial(self, material):
-        self.__materials.append(material)
+    def addMaterial(self, material, num):
+        self.materials[material] = num
     
     def removeMaterial(self, material):
-        self.__materials.remove(material)
+        del self.materials[material]
     
     # this method takes weapon as a parameter and adds it to the weapons list
     def addWeapon(self, weapon):
-        self.__weapons.append(weapon)
+        self.weapons.append(weapon)
         
     def removeWeapon(self, weapon):
-        self.__weapons.remove(weapon)
+        self.weapons.remove(weapon)
     
     # this method takes echantment as a parameter and adds it to the echantment list
-    def addEchantment(self,echantment):
-        self.__enchantment.append(echantment)
+    def addEnchantment(self,enchantment):
+        self.enchantments.append(enchantment)
 
-    def removeEchantment(self, enchantment):
-        self.__enchantment.remove(enchantment)
+    def removeEnchantment(self, enchantment):
+        self.enchantments.remove(enchantment)
 
     def displayWeapons(self):
-        
-        for  weapon in self.__weapons: 
-            enchantmentDetails = ""
-            if weapon.enchantment: 
-                enchantmentDetails += f"The {weapon.enchantment.useEffect()}"
-            else:
-                enchantmentDetails += f"{self.__weapons} is not enchanted"
-                        
-            enchantmentDetails = f'The {weapon.name} is {enchantmentDetails}. It deals {weapon.attack()} damage.\n'
-            
-            result += enchantmentDetails
+        enchantmentDetails = ""
 
-        return result
+        for weapon in self.weapons: 
+            
+            if weapon.getEnchanted() == True: 
+                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.enchantment.useEffect()}. {weapon.attack()}\n'
+            else:
+                enchantmentDetails += f"{weapon.getName()} is not enchanted. {weapon.attack()}"
+
+        return enchantmentDetails
     
     def displayEnchantments(self):
         enchantmentNames = []
         
-        for enchantment in self.__enchantment:
+        for enchantment in self.enchantments:
             enchantmentNames.append('A {} enchantment is stored in workshop.'.format(enchantment.getName()))
 
         return '\n'.join(enchantmentNames)  
+    
+    def displayMaterials(self):
+        return "Materials"
 
 class Crafter(ABC):
+    def __init__(self):
+        pass
+
+    @abstractmethod
     def craft(self): # implementation of the craft method
         pass
     
+    @abstractmethod
     def disassemble(self): # implemenetation of the disassemble method
         pass
 
@@ -123,6 +128,9 @@ class Weapon:
             damage = catalystMaterial.strength * (primaryMaterial.strength * primaryMaterial.purity)
         
         return damage
+    
+    def attack(self):
+        return f"It deals {self.getDamage():.2f} damage.\n"
 
 class Forge(Crafter):
     def __init__(self):
@@ -144,10 +152,11 @@ class Forge(Crafter):
 
         materials[primaryMaterial.__class__.__name__] += 1
         materials[catalystMaterial.__class__.__name__] += 1 
+        return weapon
 
         
 class Enchanter(Crafter):
-    def __init__(self,):
+    def __init__(self):
         self.recipes = {
             "Holy": "pulses a blinding beam of light",
             "Lava": "melts the armour off an enemy",
@@ -159,10 +168,25 @@ class Enchanter(Crafter):
             "Earthly":"Down to earth"}
         
 
-    #def craft(self, enchantment):
+    def craft(self, name, primaryMaterial, catalystMaterial, materials):
+        enchantment = Enchantment(name, primaryMaterial, catalystMaterial)
+        return enchantment
+
+    def disassemble(self, enchantment, materials):
+        primaryMaterial = enchantment.getPrimaryMaterial()
+        catalystMaterial = enchantment.getCatalystMaterial()
+
+        materials[primaryMaterial.__class__.__name__] += 1
+        materials[catalystMaterial.__class__.__name__] += 1 
+        return enchantment
+    
+    def enchant(self, weapon, newName, enchantment):
+        return weapon
+        
+
 
 class Enchantment:
-    def __init__(self, name, magicDamage, effect, primaryMaterial, catalystMaterial):
+    def __init__(self, name, primaryMaterial, catalystMaterial):
         self.__name = name
         self.__magicDamage = 0
         self.__effect = ''
@@ -197,4 +221,82 @@ class Enchantment:
     
     def useEffect(self):
         return f'{self.__name} enchantment and {self.__effect}'
+
+# Create a workshop, forge, enchanter.
+workshop = Workshop(Forge(), Enchanter())
+
+# Create a set of materials and lists for testing.
+materials = [Maple(), Oak(), Ash(), Bronze(), Iron(), Steel(),
+    Ruby(), Sapphire(), Emerald(), Diamond(), Amethyst(), Onyx()]
+
+weaponBlueprints = {
+    "Sword": [Steel(), Maple()],
+    "Shield": [Bronze(), Oak()],
+    "Axe": [Iron(), Ash()],
+    "Scythe": [Steel(), Ash()],
+    "Bow": [Oak(), Maple()],
+    "Wand": [Ash(), Oak()],
+    "Staff": [Bronze(), Maple()],
+    "Dagger": [Bronze(), Bronze()]}
+
+enchantmentBlueprints = {
+    "Holy": [Diamond(), Diamond()],
+    "Lava": [Ruby(), Onyx()],
+    "Pyro": [Ruby(), Diamond()],
+    "Darkness": [Onyx(), Amethyst()],
+    "Cursed": [Onyx(), Onyx()],
+    "Hydro": [Sapphire(), Emerald()],
+    "Venomous": [Emerald(), Amethyst()],
+    "Earthly": [Emerald(), Emerald()]}
+
+enchantedWeapons = ["Holy Greatsword", "Molten Defender", "Berserker Axe", "Soul Eater",
+    "Twisted Bow", "Wand of the Deep", "Venemous Battlestaff"]
+
+# Adds a number of materials to use for crafting.
+for material in materials:
+    if isinstance(material, Wood):
+        workshop.addMaterial(material.__class__.__name__, 20)
+    elif isinstance(material, Metal):
+        workshop.addMaterial(material.__class__.__name__, 10)
+    else:
+        workshop.addMaterial(material.__class__.__name__, 5)
+
+print("--------------------------------Material Store--------------------------------")
+print(workshop.displayMaterials())
+
+# Crafts the following: Sword, Shield, Axe, Scythe, Bow, Wand and Staff weapons.
+for weapon, materials in weaponBlueprints.items():
+    craftedWeapon = workshop.forge.craft(
+        weapon, materials[0], materials[1], workshop.materials)
+    workshop.addWeapon(craftedWeapon)
+
+# Disassemble the extra weapon.'
+workshop.removeWeapon(workshop.forge.disassemble(
+    workshop.weapons[7], workshop.materials))
+
+print("------------------------------------Armoury-----------------------------------")
+print(workshop.displayWeapons())
+
+# Crafts the following: Holy, Lava, Pyro, Darkness, Cursed, Hydro and Venomous enchantments.
+for enchantment, materials in enchantmentBlueprints.items():
+    craftedEnchantment = workshop.enchanter.craft(
+        enchantment, materials[0], materials[1], workshop.materials)
+    workshop.addEnchantment(craftedEnchantment)
+
+# Disassemble the extra enchantment.
+workshop.removeEnchantment(workshop.enchanter.disassemble(
+    workshop.enchantments[7], workshop.materials))
+
+print("------------------------------------Enchantments------------------------------------")
+print(workshop.displayEnchantments())
+
+print("-----------------------------------Material Store-----------------------------------")
+print(workshop.displayMaterials())
+
+# Enchant the following weapons: Sword, Shield, Axe, Scythe, Bow, Wand and Staff.
+for i in range(len(enchantedWeapons)):
+    workshop.enchanter.enchant(
+        workshop.weapons[i], enchantedWeapons[i], workshop.enchantments[i])
     
+print("-----------------------------------Enchanted Armoury----------------------------------")
+print(workshop.displayWeapons())
