@@ -43,14 +43,15 @@ class Workshop: # The main class
     def displayWeapons(self):
         
         for  weapon in self.__weapons: 
+            enchantmentDetails = ""
             if weapon.enchantment: 
-                enchantmentDetails = f"The {weapon.enchantment.useEffect()}"
+                enchantmentDetails += f"The {weapon.enchantment.useEffect()}"
             else:
-                enchantmentDetails = f"{self.__weapons} is not enchanted"
+                enchantmentDetails += f"{self.__weapons} is not enchanted"
                         
-            weaponDetails = f'The {weapon.name} is {enchantmentDetails}. It deals {weapon.attack()} damage.\n'
+            enchantmentDetails = f'The {weapon.name} is {enchantmentDetails}. It deals {weapon.attack()} damage.\n'
             
-            result += weaponDetails
+            result += enchantmentDetails
 
         return result
     
@@ -193,3 +194,7 @@ class Enchantment:
         damage = (primaryMaterial.strength * primaryMaterial + catalystMaterial.strength * catalystMaterial.magicPower)
 
         return damage
+    
+    def useEffect(self):
+        return f'{self.__name} enchantment and {self.__effect}'
+    
