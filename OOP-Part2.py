@@ -46,7 +46,8 @@ class Workshop: # The main class
         for weapon in self.weapons: 
             
             if weapon.getEnchanted() == True: 
-                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.enchantment.useEffect()}. {weapon.attack()}\n'
+
+                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.attack()}\n'
             else:
                 enchantmentDetails += f"{weapon.getName()} is not enchanted. {weapon.attack()}"
 
@@ -61,7 +62,12 @@ class Workshop: # The main class
         return '\n'.join(enchantmentNames)  
     
     def displayMaterials(self):
-        return "Materials"
+        materialDisplay = ""
+
+        for material in self.materials:
+            materialDisplay += f"{material}: {self.materials[material]} remaining.\n"
+
+        return materialDisplay
 
 class Crafter(ABC):
     def __init__(self):
@@ -80,7 +86,7 @@ class Weapon:
         self.__primaryMaterial = primaryMaterial
         self.__catalystMaterial = catalystMaterial
         self.__damage = 0
-        self.__enchantment = None
+        self.__enchantment = ''
         self.__enchanted = False
         self.__name = ''
     
@@ -169,7 +175,11 @@ class Enchanter(Crafter):
         
 
     def craft(self, name, primaryMaterial, catalystMaterial, materials):
+        materials[primaryMaterial.__class__.__name__] -= 1
+        materials[catalystMaterial.__class__.__name__] -= 1 
         enchantment = Enchantment(name, primaryMaterial, catalystMaterial)
+        enchantment.setEffect(self.recipes[name])
+        enchantment.setMagicDamage(enchantment.calculateMagicDamage(primaryMaterial, catalystMaterial))
         return enchantment
 
     def disassemble(self, enchantment, materials):
@@ -181,6 +191,11 @@ class Enchanter(Crafter):
         return enchantment
     
     def enchant(self, weapon, newName, enchantment):
+        weapon.setEnchanted(True)
+        weapon.setEnchantment(enchantment)
+        weapon.setDamage(weapon.getDamage() * enchantment.getMagicDamage())
+        weapon.setName(newName)
+
         return weapon
         
 
@@ -215,7 +230,7 @@ class Enchantment:
         self.__magicDamage = damage
     
     def calculateMagicDamage(self, primaryMaterial, catalystMaterial):
-        damage = (primaryMaterial.strength * primaryMaterial + catalystMaterial.strength * catalystMaterial.magicPower)
+        damage = (primaryMaterial.strength * primaryMaterial.magicPower + catalystMaterial.strength * catalystMaterial.magicPower)
 
         return damage
     
