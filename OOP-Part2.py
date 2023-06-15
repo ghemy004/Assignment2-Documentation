@@ -119,7 +119,7 @@ class Weapon:
         elif isinstance (primaryMaterial, Wood) and isinstance(catalystMaterial, Metal):
             damage = primaryMaterial.strength * (catalystMaterial.strength * catalystMaterial.purity)
         else:
-            damage = catalystMaterial * (primaryMaterial.strength * primaryMaterial.purity)
+            damage = catalystMaterial.strength * (primaryMaterial.strength * primaryMaterial.purity)
         
         return damage
 
@@ -189,5 +189,7 @@ class Enchantment:
     def setMagicDamage(self, damage):
         self.__magicDamage = damage
     
-    
-    
+    def calculateMagicDamage(self, primaryMaterial, catalystMaterial):
+        damage = (primaryMaterial.strength * primaryMaterial + catalystMaterial.strength * catalystMaterial.magicPower)
+
+        return damage
