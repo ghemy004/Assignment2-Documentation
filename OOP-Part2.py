@@ -11,7 +11,11 @@ EmailID: ghemy004@mymail.unisa.edu.au
 This is my own work as defined by the University's Academic Misconduct Policy.
 '''
 
-class Workshop: # The main class
+
+'''
+the workshop class represents the workshop it's self, it takes forge and enchanter as attributes.
+'''
+class Workshop: 
     def __init__(self, forge, enchanter): # 
         self.forge = forge
         self.enchanter = enchanter
@@ -19,21 +23,19 @@ class Workshop: # The main class
         self.weapons = []
         self.enchantments = [] 
     
-    # this method takes material as a parameter and adds it to the material 
     def addMaterial(self, material, num):
         self.materials[material] = num
     
     def removeMaterial(self, material):
         del self.materials[material]
     
-    # this method takes weapon as a parameter and adds it to the weapons list
     def addWeapon(self, weapon):
         self.weapons.append(weapon)
         
     def removeWeapon(self, weapon):
         self.weapons.remove(weapon)
     
-    # this method takes echantment as a parameter and adds it to the echantment list
+    
     def addEnchantment(self,enchantment):
         self.enchantments.append(enchantment)
 
@@ -68,19 +70,24 @@ class Workshop: # The main class
             materialDisplay += f"{material}: {self.materials[material]} remaining.\n"
 
         return materialDisplay
-
+'''
+the Crafter class is an abstract class, this class defines abstract method craft() and disassemble()
+'''
 class Crafter(ABC):
     def __init__(self):
         pass
 
     @abstractmethod
-    def craft(self): # implementation of the craft method
+    def craft(self): 
         pass
     
     @abstractmethod
-    def disassemble(self): # implemenetation of the disassemble method
+    def disassemble(self): 
         pass
-
+'''
+the weapon class reprsents a weapon, taking mutliple attributes such as primary material, cataylst material, damage etc...
+this class holds the methods to calculate damage based on the materials used and then performs an attack
+'''
 class Weapon:
     def __init__(self, primaryMaterial, catalystMaterial):
         self.__primaryMaterial = primaryMaterial
@@ -137,7 +144,10 @@ class Weapon:
     
     def attack(self):
         return f"It deals {self.getDamage():.2f} damage.\n"
-
+'''
+Forge being the subclass of crafter it reprsents a crafter that's specialized in weapon forging.
+this class implements the craft() and disassemble() methods
+'''
 class Forge(Crafter):
     def __init__(self):
         pass
@@ -160,7 +170,10 @@ class Forge(Crafter):
         materials[catalystMaterial.__class__.__name__] += 1 
         return weapon
 
-        
+'''
+Enchanter being another subclass of crafter it represents a crafter specialized in enchanting weapons.
+This class also implements the craft() and disassemble() methods.
+'''     
 class Enchanter(Crafter):
     def __init__(self):
         self.recipes = {
@@ -190,6 +203,9 @@ class Enchanter(Crafter):
         materials[catalystMaterial.__class__.__name__] += 1 
         return enchantment
     
+    '''
+    this Enchant method is used to apply an enchantment to a weapon and modifying it's properties. 
+    '''
     def enchant(self, weapon, newName, enchantment):
         weapon.setEnchanted(True)
         weapon.setEnchantment(enchantment)
@@ -199,7 +215,10 @@ class Enchanter(Crafter):
         return weapon
         
 
-
+'''
+this enchantment class represents enchantment, has attributes such as name, damage, effect and materials.
+this class also stores methods to caclulate magic damage and to display the effects of enchantment
+'''
 class Enchantment:
     def __init__(self, name, primaryMaterial, catalystMaterial):
         self.__name = name
