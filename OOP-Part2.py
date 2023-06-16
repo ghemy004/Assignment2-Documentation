@@ -49,9 +49,9 @@ class Workshop:
 
         for weapon in self.weapons: 
             
-            if weapon.getEnchanted() == True: 
+            if weapon.Enchanted == True: 
 
-                enchantmentDetails += f'The {weapon.Name} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.Attack}'
+                enchantmentDetails += f'The {weapon.Name} is imbued with a {weapon.Enchantment.useEffect()}. {weapon.Attack}'
             else:
                 enchantmentDetails += f"{weapon.Name} is not enchanted. {weapon.Attack}"
 
@@ -65,7 +65,7 @@ class Workshop:
         enchantmentNames = []
         
         for enchantment in self.enchantments:
-            enchantmentNames.append('A {} enchantment is stored in workshop.'.format(enchantment.getName()))
+            enchantmentNames.append('A {} enchantment is stored in workshop.'.format(enchantment.name))
 
         return '\n'.join(enchantmentNames)  
     
@@ -167,13 +167,15 @@ class Weapon:
     this attack method is responsible for providing a text display representation of the damage dealt by a weapon
     '''
     def attack(self):
-        return f"It deals {self.getDamage():.2f} damage.\n"
+        return f"It deals {self.damage:.2f} damage.\n"
     
     Name = property(getName,setName)
     PrimaryMaterial = property(getPrimaryMaterial)
     CatalystMaterial = property(getCatalystMaterial)
-    damage = property(getDamage)
+    damage = property(getDamage, setDamage)
     Attack = property(attack)
+    Enchanted = property(getEnchanted, setEnchanted)
+    Enchantment = property (getEnchantment, setEnchantment)
     
 '''
 Forge being the subclass of crafter it reprsents a crafter that's specialized in weapon forging.
@@ -309,6 +311,7 @@ class Enchantment:
     primaryMaterial = property(getPrimaryMaterial)
     catalystMaterial = property(getCatalystMaterial)
     magicDamage = property(getMagicDamage)
+    name = property(getName)
 
 # Create a workshop, forge, enchanter.
 workshop = Workshop(Forge(), Enchanter())
