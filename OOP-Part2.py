@@ -105,13 +105,14 @@ the weapon class reprsents a weapon, taking mutliple attributes such as primary 
 this class holds the methods to calculate damage based on the materials used and then performs an attack
 '''
 class Weapon:
-    def __init__(self, primaryMaterial, catalystMaterial):
+    def __init__(self, name, primaryMaterial, catalystMaterial):
         self.__primaryMaterial = primaryMaterial
         self.__catalystMaterial = catalystMaterial
         self.__damage = 0
         self.__enchantment = ''
         self.__enchanted = False
-        self.__name = ''
+        self.__name = name
+        
     
     def getName(self):
         return self.__name
@@ -180,16 +181,17 @@ class Forge(Crafter):
     it creates a new instance of a weapon, calculates its damage and sets the name of the weapon and updates the material count within the workshop.
     '''
     def craft(self, name, primaryMaterial, catalystMaterial, materials):
-        weapon = Weapon(primaryMaterial, catalystMaterial)
+        weapon = Weapon(name, primaryMaterial, catalystMaterial)
         weapon.setDamage(weapon.calculateDamage(primaryMaterial, catalystMaterial))
-        weapon.setName(name)
+        #weapon.setName(name)
 
         materials[primaryMaterial.__class__.__name__] -= 1
         materials[catalystMaterial.__class__.__name__] -= 1
 
         return weapon
     '''
-    
+    this method is also inherited from the crafter abstract class, it is responsible for disassembling a weapon and retrieving it's primary and catalyst materials
+    it updates the materials counts in the workshop aswell
     '''
     def disassemble(self, weapon, materials):
         primaryMaterial = weapon.getPrimaryMaterial()
@@ -214,8 +216,11 @@ class Enchanter(Crafter):
             "Hydro": "envelops the enemy in a suffocating bubble",
             "Venomous": "afflicts a deadly, fast-acting toxin",
             "Earthly":"Down to earth"}
-        
-
+    
+    '''
+    the craft method within this enchanter class, is inherited from the crafter abstract class, it is responsible for crafting new enchantments by combining primary and catalyst material
+    creates a new instance of an enchantment, sets its effects and magic damage and returns the crafted enchantment
+    '''  
     def craft(self, name, primaryMaterial, catalystMaterial, materials):
         materials[primaryMaterial.__class__.__name__] -= 1
         materials[catalystMaterial.__class__.__name__] -= 1 
@@ -223,7 +228,10 @@ class Enchanter(Crafter):
         enchantment.setEffect(self.recipes[name])
         enchantment.setMagicDamage(enchantment.calculateMagicDamage(primaryMaterial, catalystMaterial))
         return enchantment
-
+    '''
+    also inherited from crafter abstract class, it is responsible for disassembling an existing enchantment and returning the primary and catylst materials used
+    it retrieves the primary and cataylst materials from the enchantment and it adds the material count in the workshop and returns the disassembled enchantment
+    '''
     def disassemble(self, enchantment, materials):
         primaryMaterial = enchantment.getPrimaryMaterial()
         catalystMaterial = enchantment.getCatalystMaterial()
@@ -277,11 +285,18 @@ class Enchantment:
     def setMagicDamage(self, damage):
         self.__magicDamage = damage
     
+    '''
+    it is responsible for calculating the magic damage caused by the enchantment based on the strength and magic power of the primary and catlyst materials used
+    it calculates the magic damaged caused by the enchantment based on the strength and magic power
+    '''
     def calculateMagicDamage(self, primaryMaterial, catalystMaterial):
         damage = (primaryMaterial.strength * primaryMaterial.magicPower + catalystMaterial.strength * catalystMaterial.magicPower)
 
         return damage
-    
+    '''
+    the useEffect is responsible for returning a string of the effect produced by the enchantment when it is exacuted
+    it takes the name and effect of enchantment and returns a string explaining the effect done by the enchantment that's being used.
+    '''
     def useEffect(self):
         return f'{self.__name} enchantment and {self.__effect}'
 
@@ -363,3 +378,5 @@ for i in range(len(enchantedWeapons)):
     
 print("-----------------------------------Enchanted Armoury----------------------------------")
 print(workshop.displayWeapons())
+
+
