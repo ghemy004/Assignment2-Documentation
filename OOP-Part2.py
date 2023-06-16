@@ -42,6 +42,9 @@ class Workshop:
     def removeEnchantment(self, enchantment):
         self.enchantments.remove(enchantment)
 
+    '''
+    this displayWeapons is reponsible for displaying the information about the weapons stored within the workshop class.
+    '''
     def displayWeapons(self):
         enchantmentDetails = ""
 
@@ -55,6 +58,10 @@ class Workshop:
 
         return enchantmentDetails
     
+    '''
+    this displayEnchantments is reponsible for displaying information about the enchantments stored in the workshop class.
+    it generates a string that includes the names of the enchantments stored, each enchantment name is listed on a separate line.
+    '''
     def displayEnchantments(self):
         enchantmentNames = []
         
@@ -63,6 +70,10 @@ class Workshop:
 
         return '\n'.join(enchantmentNames)  
     
+    '''
+    this displayMaterials is responsible for displaying information about the materials stored in the workshop
+    is basically generates a string that includes the names of the materials and the amount remaining for each material stored within the workshop
+    '''
     def displayMaterials(self):
         materialDisplay = ""
 
@@ -77,10 +88,15 @@ class Crafter(ABC):
     def __init__(self):
         pass
 
+    '''
+    the craft method below is an abstract method, that is declared but does not have any implementations.
+    '''        
     @abstractmethod
     def craft(self): 
         pass
-    
+    '''
+    this is another abstract method, it also does not have an implementation within this class.
+    '''
     @abstractmethod
     def disassemble(self): 
         pass
@@ -127,6 +143,10 @@ class Weapon:
     def setEnchantment(self, enchantment):
         self.__enchantment = enchantment
     
+    '''
+    this calculateDamage method, is reponsible for calculating the damage value of a weapon based on it's primary and catalyst materials.
+    it determines the damage value of a weapon based on the combination of the primary and cataylst material.
+    '''
     def calculateDamage(self, primaryMaterial, catalystMaterial):
 
         if isinstance(primaryMaterial, Wood) and isinstance(catalystMaterial, Wood):
@@ -142,6 +162,9 @@ class Weapon:
         
         return damage
     
+    '''
+    this attack method is responsible for providing a text display representation of the damage dealt by a weapon
+    '''
     def attack(self):
         return f"It deals {self.getDamage():.2f} damage.\n"
 '''
@@ -152,6 +175,10 @@ class Forge(Crafter):
     def __init__(self):
         pass
     
+    '''
+    the craft method is inherited from the crafter abstract class, this method is responsible for crafting a new weapon by combining a primary and catalyst material
+    it creates a new instance of a weapon, calculates its damage and sets the name of the weapon and updates the material count within the workshop.
+    '''
     def craft(self, name, primaryMaterial, catalystMaterial, materials):
         weapon = Weapon(primaryMaterial, catalystMaterial)
         weapon.setDamage(weapon.calculateDamage(primaryMaterial, catalystMaterial))
@@ -161,7 +188,9 @@ class Forge(Crafter):
         materials[catalystMaterial.__class__.__name__] -= 1
 
         return weapon
+    '''
     
+    '''
     def disassemble(self, weapon, materials):
         primaryMaterial = weapon.getPrimaryMaterial()
         catalystMaterial = weapon.getCatalystMaterial()
