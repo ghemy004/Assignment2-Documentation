@@ -51,9 +51,9 @@ class Workshop:
             
             if weapon.getEnchanted() == True: 
 
-                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.attack()}'
+                enchantmentDetails += f'The {weapon.Name} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.Attack}'
             else:
-                enchantmentDetails += f"{weapon.getName()} is not enchanted. {weapon.attack()}"
+                enchantmentDetails += f"{weapon.Name} is not enchanted. {weapon.Attack}"
 
         return enchantmentDetails
     
@@ -169,11 +169,12 @@ class Weapon:
     def attack(self):
         return f"It deals {self.getDamage():.2f} damage.\n"
     
-    name = property(setName,getName)
+    Name = property(getName,setName)
     PrimaryMaterial = property(getPrimaryMaterial)
     CatalystMaterial = property(getCatalystMaterial)
     damage = property(getDamage)
-
+    Attack = property(attack)
+    
 '''
 Forge being the subclass of crafter it reprsents a crafter that's specialized in weapon forging.
 this class implements the craft() and disassemble() methods
