@@ -35,7 +35,6 @@ class Workshop:
     def removeWeapon(self, weapon):
         self.weapons.remove(weapon)
     
-    
     def addEnchantment(self,enchantment):
         self.enchantments.append(enchantment)
 
@@ -81,6 +80,7 @@ class Workshop:
             materialDisplay += f"{material}: {self.materials[material]} remaining.\n"
 
         return materialDisplay
+    
 '''
 the Crafter class is an abstract class, this class defines abstract method craft() and disassemble()
 '''
@@ -168,6 +168,12 @@ class Weapon:
     '''
     def attack(self):
         return f"It deals {self.getDamage():.2f} damage.\n"
+    
+    name = property(setName,getName)
+    PrimaryMaterial = property(getPrimaryMaterial)
+    CatalystMaterial = property(getCatalystMaterial)
+    damage = property(getDamage)
+
 '''
 Forge being the subclass of crafter it reprsents a crafter that's specialized in weapon forging.
 this class implements the craft() and disassemble() methods
@@ -194,8 +200,8 @@ class Forge(Crafter):
     it updates the materials counts in the workshop aswell
     '''
     def disassemble(self, weapon, materials):
-        primaryMaterial = weapon.getPrimaryMaterial()
-        catalystMaterial = weapon.getCatalystMaterial()
+        primaryMaterial = weapon.PrimaryMaterial
+        catalystMaterial = weapon.CatalystMaterial
 
         materials[primaryMaterial.__class__.__name__] += 1
         materials[catalystMaterial.__class__.__name__] += 1 
@@ -233,8 +239,8 @@ class Enchanter(Crafter):
     it retrieves the primary and cataylst materials from the enchantment and it adds the material count in the workshop and returns the disassembled enchantment
     '''
     def disassemble(self, enchantment, materials):
-        primaryMaterial = enchantment.getPrimaryMaterial()
-        catalystMaterial = enchantment.getCatalystMaterial()
+        primaryMaterial = enchantment.primaryMaterial
+        catalystMaterial = enchantment.catalystMaterial
 
         materials[primaryMaterial.__class__.__name__] += 1
         materials[catalystMaterial.__class__.__name__] += 1 
@@ -246,12 +252,11 @@ class Enchanter(Crafter):
     def enchant(self, weapon, newName, enchantment):
         weapon.setEnchanted(True)
         weapon.setEnchantment(enchantment)
-        weapon.setDamage(weapon.getDamage() * enchantment.getMagicDamage())
+        weapon.setDamage(weapon.damage * enchantment.magicDamage)
         weapon.setName(newName)
 
         return weapon
         
-
 '''
 this enchantment class represents enchantment, has attributes such as name, damage, effect and materials.
 this class also stores methods to caclulate magic damage and to display the effects of enchantment
@@ -287,7 +292,7 @@ class Enchantment:
     
     '''
     it is responsible for calculating the magic damage caused by the enchantment based on the strength and magic power of the primary and catlyst materials used
-    it calculates the magic damaged caused by the enchantment based on the strength and magic power
+    it calculates the magic damaged caused by the enchantment based on the strength and magic power 
     '''
     def calculateMagicDamage(self, primaryMaterial, catalystMaterial):
         damage = (primaryMaterial.strength * primaryMaterial.magicPower + catalystMaterial.strength * catalystMaterial.magicPower)
@@ -299,6 +304,10 @@ class Enchantment:
     '''
     def useEffect(self):
         return f'{self.__name} enchantment and {self.__effect}'
+    
+    primaryMaterial = property(getPrimaryMaterial)
+    catalystMaterial = property(getCatalystMaterial)
+    magicDamage = property(getMagicDamage)
 
 # Create a workshop, forge, enchanter.
 workshop = Workshop(Forge(), Enchanter())
