@@ -47,7 +47,7 @@ class Workshop: # The main class
             
             if weapon.getEnchanted() == True: 
 
-                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.attack()}\n'
+                enchantmentDetails += f'The {weapon.getName()} is imbued with a {weapon.getEnchantment().useEffect()}. {weapon.attack()}'
             else:
                 enchantmentDetails += f"{weapon.getName()} is not enchanted. {weapon.attack()}"
 
